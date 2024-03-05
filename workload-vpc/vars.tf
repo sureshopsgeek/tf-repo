@@ -4,24 +4,6 @@ variable "region" {
   default     = "us-south"
 }
 
-# variable "team" {
-#   type              = string
-#   description       = "Please provide team name"
-#   default           = "ipc"
-# }
-
-# variable "project" {
-#   type              = string
-#   description       = "Please update the project name"
-#   default           = "test"
-# }
-
-# variable "envirnoment" {
-#   type              = string
-#   description       = "Please update the envirnoment name"
-#   default           = "nonprod"
-# }
-
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
