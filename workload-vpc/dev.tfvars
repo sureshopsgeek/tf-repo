@@ -39,11 +39,11 @@ network_acls = [{
       name        = "rule-2",
       action      = "allow",
       destination = "192.168.0.0/27",
-      direction   = "inbound",
+      direction   = "outbound",
       source      = "192.168.0.0/26",
       tcp = {
-        port_min        = 22,
-        port_max        = 22,
+        port_min        = 80,
+        port_max        = 8080,
         source_port_min = 1024,
         source_port_max = 65535
       }
