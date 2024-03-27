@@ -15,7 +15,7 @@ module "resource_group" {
 #############################################################################
 
 module "workload_vpc" {
-  source                                 = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git"
+  source                                 = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=v7.17.1"
   for_each                               = var.vpc.config
   name                                   = "${var.prefix}-vpc"
   create_vpc                             = each.value.create_vpc

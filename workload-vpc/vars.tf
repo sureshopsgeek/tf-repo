@@ -91,50 +91,62 @@ variable "address_prefixes" {
 # }
 
 
-variable "network_acls" {
-  description = "List of network ACLs to create with VPC"
-  type = list(
-    object({
-      name                         = string
-      add_ibm_cloud_internal_rules = optional(bool)
-      add_vpc_connectivity_rules   = optional(bool)
-      prepend_ibm_rules            = optional(bool)
-      rules = list(
-        object({
-          name        = string
-          action      = string
-          destination = string
-          direction   = string
-          source      = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
-        })
-      )
-    })
-  )
+# variable "network_acls" {
+#   description = "List of network ACLs to create with VPC"
+#   type = list(
+#     object({
+#       name                         = string
+#       add_ibm_cloud_internal_rules = optional(bool)
+#       add_vpc_connectivity_rules   = optional(bool)
+#       prepend_ibm_rules            = optional(bool)
+#       rules = list(
+#         object({
+#           name        = string
+#           action      = string
+#           destination = string
+#           direction   = string
+#           source      = string
+#           tcp = optional(
+#             object({
+#               port_max        = optional(number)
+#               port_min        = optional(number)
+#               source_port_max = optional(number)
+#               source_port_min = optional(number)
+#             })
+#           )
+#           udp = optional(
+#             object({
+#               port_max        = optional(number)
+#               port_min        = optional(number)
+#               source_port_max = optional(number)
+#               source_port_min = optional(number)
+#             })
+#           )
+#           icmp = optional(
+#             object({
+#               type = optional(number)
+#               code = optional(number)
+#             })
+#           )
+#         })
+#       )
+#     })
+#   )
+# }
+
+variable "network_acls"  {
+  default = [{
+    name                         = "ipc-test-nonprod-roks-acl"
+    add_ibm_cloud_internal_rules = true
+    add_vpc_connectivity_rules   = false
+    prepend_ibm_rules            = true
+    rules = [ {name = "rule-1", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 80, port_max = 8080, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-2", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 8080, port_max = 80, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-3", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-4", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}}]
+    }  
+  ]
 }
-
-
 
 variable "use_public_gateways" {
   description = "For each `zone` that is set to `true`, a public gateway will be created in that zone"

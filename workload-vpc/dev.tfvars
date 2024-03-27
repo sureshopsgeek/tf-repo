@@ -22,55 +22,11 @@ network_acls = [{
   add_ibm_cloud_internal_rules = true,
   add_vpc_connectivity_rules   = false,
   prepend_ibm_rules            = true,
-  rules = [
-    { name        = "rule-1",
-      action      = "allow",
-      destination = "192.168.0.0/27",
-      direction   = "inbound",
-      source      = "192.168.0.0/26",
-      tcp = {
-        port_min        = 80,
-        port_max        = 8080,
-        source_port_min = 1024,
-        source_port_max = 65535
-      }
-    },
-    {
-      name        = "rule-2",
-      action      = "allow",
-      destination = "192.168.0.0/27",
-      direction   = "outbound",
-      source      = "192.168.0.0/26",
-      tcp = {
-        port_min        = 80,
-        port_max        = 8080,
-        source_port_min = 1024,
-        source_port_max = 65535
-      }
-    }
-  ]
-  },
-  {
-    name                         = "ipc-test-nonprod-orbo-acl",
-    add_ibm_cloud_internal_rules = true,
-    add_vpc_connectivity_rules   = false,
-    prepend_ibm_rules            = true,
-    rules = [
-      {
-        name        = "rule-2",
-        action      = "allow",
-        destination = "192.168.0.0/27",
-        direction   = "inbound", source = "192.168.0.0/26",
-        tcp = {
-          port_min        = 58083,
-          port_max        = 58083,
-          source_port_min = 1024,
-          source_port_max = 65535
-        }
-      }
-    ]
-  }
-]
+  rules = [ {name = "rule-1", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 80, port_max = 8080, source_port_min = 1024, source_port_max = 65535}},
+            {name = "rule-2", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 8080, port_max = 80, source_port_min = 1024, source_port_max = 65535}},
+            {name = "rule-3", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+            {name = "rule-4", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}}]
+}]
 
 subnets = {
   zone-1 = [
@@ -80,11 +36,7 @@ subnets = {
       "name" : "roks-dal01-subnet",
       "public_gateway" : false
     },
-    { "acl_name" : "ipc-test-nonprod-orbo-acl",
-      "cidr" : "192.168.0.64/27",
-      "name" : "orbo-dal01-subnet",
-      "public_gateway" : false
-    },
+
   ]
   zone-2 = [
     { "acl_name" : "ipc-test-nonprod-roks-acl",
@@ -99,5 +51,41 @@ subnets = {
       "name" : "roks-dal03-subnet",
       "public_gateway" : false
     },
+  ]
+}
+
+
+variable "network_acls"  {
+  default = [{
+    name                         = "ipc-test-nonprod-roks-acl"
+    add_ibm_cloud_internal_rules = true
+    add_vpc_connectivity_rules   = false
+    prepend_ibm_rules            = true
+    rules = [ {name = "rule-1", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 80, port_max = 80, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-2", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 8080, port_max = 8080, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-3", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-4", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-5", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 443, port_max = 443, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-6", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 443, port_max = 443, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-7", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26"} ]
+      }  
+  ]
+}
+
+
+variable "network_acls"  {
+  default = [{
+    name                         = "ipc-test-nonprod-roks-acl"
+    add_ibm_cloud_internal_rules = true
+    add_vpc_connectivity_rules   = false
+    prepend_ibm_rules            = true
+    rules = [ {name = "rule-1", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 80, port_max = 80, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-2", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 8080, port_max = 8080, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-3", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-4", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 22, port_max = 22, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-5", action = "allow", destination = "192.168.0.0/27", direction = "inbound", source = "192.168.0.0/26", tcp = {port_min = 443, port_max = 443, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-6", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26", tcp = {port_min = 443, port_max = 443, source_port_min = 1024, source_port_max = 65535}},
+              {name = "rule-7", action = "allow", destination = "192.168.0.0/27", direction = "outbound", source = "192.168.0.0/26"},]
+      }  
   ]
 }
